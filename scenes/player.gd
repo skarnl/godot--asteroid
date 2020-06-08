@@ -1,14 +1,17 @@
-extends KinematicBody2D
+ extends KinematicBody2D
 
-const ACCELERATION = 1000
-const MAX_SPEED = 150
-const FRICTION = 370
+const ACCELERATION = 900
+const MAX_SPEED = 180
+const FRICTION = 80
 
 var screen_size : Vector2
 var player_rect: Vector2
 
 var velocity = Vector2.ZERO
 
+onready var animation_player = $AnimationPlayer
+
+var thrusting = false
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -43,7 +46,16 @@ func handleMovement(delta):
 		
 	if input_vector != Vector2.ZERO:
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
+		
+		if not thrusting:
+			animation_player.play("StartThrust")
+			thrusting = true
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 		
+		if thrusting:
+			animation_player.play("EndThrust")
+			thrusting = false
+		
 	move_and_slide(velocity)
+	look_at(position + velocity)

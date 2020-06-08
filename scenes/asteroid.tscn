@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/asteroid.png" type="Texture" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends RigidBody2D
+
+const BIG_FRAMES = 10
+const SMALL_FRAMES = 11
+
+const BIG_RADIUS = 14
+const SMALL_RADIUS = 7
+
+var rand_generate = RandomNumberGenerator.new()
+
+func _ready():
+	yield(get_tree(), \"idle_frame\")
+	
+	randomize()
+	rand_generate.randomize()
+	random_frame()
+
+	var velocity = Vector2.ZERO
+	velocity.x += rand_generate.randf_range(-20, 20) + 1
+	velocity.y += rand_generate.randf_range(-20, 20) + 1
+
+	apply_impulse(Vector2(-10, 0), velocity)
+
+
+func get_random(change:float) -> bool:
+	return randf() > (1 - change)
+	
+
+
+func random_frame():
+	var go_big = get_random(0.8)
+	var target_frame:int
+	var collider_radius:float
+	
+	if go_big:
+		target_frame = rand_generate.randi_range(0, BIG_FRAMES)
+		collider_radius = BIG_RADIUS
+	else:
+		target_frame = rand_generate.randi_range(BIG_FRAMES + 1, BIG_FRAMES + SMALL_FRAMES)
+		collider_radius = SMALL_RADIUS
+	
+	print(go_big)	
+	print(collider_radius)
+	
+	$Sprite.frame = target_frame
+	$Sprite.flip_h = get_random(0.5)
+	$Sprite.flip_v = get_random(0.5)
+	$CollisionShape2D.shape = $CollisionShape2D.shape.duplicate(true)
+	$CollisionShape2D.shape.radius = collider_radius
+	
+	
+"
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 14.0
+
+[node name="Asteroid" type="RigidBody2D"]
+position = Vector2( 180.457, 112.117 )
+collision_mask = 7
+gravity_scale = 0.0
+script = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+vframes = 4
+hframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
