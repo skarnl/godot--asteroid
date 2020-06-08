@@ -44,9 +44,6 @@ func random_frame():
 		target_frame = rand_generate.randi_range(BIG_FRAMES + 1, BIG_FRAMES + SMALL_FRAMES)
 		collider_radius = SMALL_RADIUS
 	
-	print(go_big)	
-	print(collider_radius)
-	
 	$Sprite.frame = target_frame
 	$Sprite.flip_h = get_random(0.5)
 	$Sprite.flip_v = get_random(0.5)
