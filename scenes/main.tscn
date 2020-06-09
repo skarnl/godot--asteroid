@@ -1,15 +1,29 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://scripts/main.gd" type="Script" id=1]
+[ext_resource path="res://scripts/painer.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/background.gd" type="Script" id=3]
 [ext_resource path="res://scenes/asteroid.tscn" type="PackedScene" id=4]
 
 [node name="Main" type="Node2D"]
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Painter" type="Node2D" parent="."]
 script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="Painter"]
+wait_time = 2.0
+autostart = true
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 
+[node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
+
 [node name="Asteroids" type="Node2D" parent="."]
+visible = false
 
 [node name="Asteroid" parent="Asteroids" instance=ExtResource( 4 )]
 position = Vector2( 149.292, 18.5383 )
@@ -55,3 +69,4 @@ position = Vector2( 83.3678, 219.518 )
 
 [node name="Asteroid11" parent="Asteroids" instance=ExtResource( 4 )]
 position = Vector2( 310.899, 127.04 )
+[connection signal="timeout" from="Painter/Timer" to="Painter" method="_on_Timer_timeout"]
