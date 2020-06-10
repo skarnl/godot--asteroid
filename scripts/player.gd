@@ -13,6 +13,7 @@ onready var animation_player = $AnimationPlayer
 
 var thrusting = false
 
+
 var route = PoolVector2Array()
 var last_input_vector = Vector2.ZERO
 
