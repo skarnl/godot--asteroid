@@ -29,10 +29,9 @@ jobs:
       - name: download osx
         uses: dsaltares/fetch-gh-release-asset@master
         with:
-          repo: skarnl/godot--asteroid
-          tag: "latest"
           file: race-the-dots--osx.zip
-          token: "${{ secrets.GITHUB_TOKEN }}"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: release osx
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
