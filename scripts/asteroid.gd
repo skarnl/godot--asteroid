@@ -8,6 +8,7 @@ const SMALL_RADIUS = 8
 
 var rand_generate = RandomNumberGenerator.new()
 
+
 func _ready():
 	yield(get_tree(), "idle_frame")
 	
