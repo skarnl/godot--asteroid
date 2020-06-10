@@ -1,0 +1,42 @@
+on:
+  release:
+    types: [created, edited]
+
+env:
+  PROJECT_NAME: race-the-dots
+
+jobs:
+  release_windows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: download windows
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          file: $PROJECT_NAME--windows.zip
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: release windows
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: windows
+          ITCH_GAME: $PROJECT_NAME
+          ITCH_USER: skar
+          PACKAGE: $PROJECT_NAME--windows.zip
+  release_osx:
+    runs-on: ubuntu-latest
+    steps:
+      - name: download osx
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          file: $PROJECT_NAME--osx.zip
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: release osx
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: osx
+          ITCH_GAME: $PROJECT_NAME
+          ITCH_USER: skar
+          PACKAGE: $PROJECT_NAME--osx.zip
